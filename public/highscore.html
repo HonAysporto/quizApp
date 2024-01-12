@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Score Page</title>
+    <link rel="stylesheet" href="highscore.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="highscore_div">
+    <h1>Scores</h1>
+
+    <ul id="highScoreList"></ul>
+   
+  </div>
+  <a class="btn" href="game.html">Go Home</a>
+    
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1R9btd3eWN3M_xrmJ6K1-ye4EtcDScyY",
+      authDomain: "first-74301.firebaseapp.com",
+      databaseURL: "https://first-74301-default-rtdb.firebaseio.com",
+      projectId: "first-74301",
+      storageBucket: "first-74301.appspot.com",
+      messagingSenderId: "9783048559",
+      appId: "1:9783048559:web:2fd169534323a559da909a"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const highScoreList = document.getElementById('highScoreList');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Reference to the "highScoreStore" node
+        const dbRef = ref(database, "highScoreStore");
+
+        // Listen for changes in the database
+        onValue(dbRef, (snapshot) => {
+            // Clear the existing high score list
+            highScoreList.innerHTML = '';
+
+            // Iterate through the snapshot to get the high scores
+            snapshot.forEach((childSnapshot) => {
+                const scoreData = childSnapshot.val();
+                const scoreElement = document.createElement('li');
+                scoreElement.textContent = `${scoreData.userName}: ${scoreData.score}`;
+                highScoreList.appendChild(scoreElement);
+            });
+            console.log(highScoreList);
+        });
+    });
+
+
+</script>
+
+
+
+</body>
+</html>

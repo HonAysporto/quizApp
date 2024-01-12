@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+
+  <div class="container">
+    <div class="heading">Sign In</div>
+    <form action="" class="form">
+      <input required="" class="input" type="email" name="emaili" id="email" placeholder="E-mail">
+      <input required="" class="input" type="password" name="password" id="passwordd" placeholder="Password">
+      <span class="forgot-password"><a href="#">Forgot Password ?</a></span>
+      <input class="login-button" type="submit" value="Sign In">
+      
+    </form>
+    <div class="social-account-container">
+        <span class="title">Or Sign in with</span>
+        <div class="social-accounts">
+          <button id="signinBtn" class="social-button google">
+            <svg class="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
+              <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+      </svg></button>
+         
+        
+        </div>
+      </div>
+      <span class="agreement"><a href="#">Learn user licence agreement</a></span>
+  </div>
+  
+  
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { GoogleAuthProvider, getAuth, signInWithPopup, sendEmailVerification, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1R9btd3eWN3M_xrmJ6K1-ye4EtcDScyY",
+      authDomain: "first-74301.firebaseapp.com",
+      projectId: "first-74301",
+      storageBucket: "first-74301.appspot.com",
+      messagingSenderId: "9783048559",
+      appId: "1:9783048559:web:2fd169534323a559da909a"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const provider = new (GoogleAuthProvider);
+    const auth = getAuth();
+    
+
+
+    document.getElementById('signinBtn').addEventListener('click', ()=> {
+      signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+        
+          sendEmailVerification(auth.currentUser).then(()=> {
+            alert('Verification mail sent')
+          })
+        window.location.href = 'indexx.html';
+      })
+    })
+  
+    document.getElementById('signupBtn').addEventListener('click', () => {
+  const email = document.getElementById('emaill').value;
+  const password = document.getElementById('passwordd').value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userData) => {
+      const user = userData.user;
+      console.log('User signed up:', user);
+      window.location.href = 'indexx.html';
+      // Additional actions after successful sign-up
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Error creating user:', errorCode, errorMessage);
+
+      // Handle specific error cases
+      if (errorCode === 'auth/weak-password') {
+        alert('The password is too weak. Please choose a stronger password.');
+      } else {
+        alert(errorMessage);
+      }
+    });
+});
+
+  </script>
+</body>
+</html>
+
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick quiz</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    
+    <nav id="nav_bar">
+      <div id="navv_bar">
+
+      </div>
+      <button class="btnn" id="signOutBtn">Sign out</button>
+    </nav>
+   
+
+    <div class="container">
+        <div id="home" class="flex-center flex-column">
+            <h1>Quick Quiz</h1>
+            <a class="btn" id="gameBtn" href="game.html">Play</a>
+            <a class="btn" id="highScoreBtn" href="highscore.html">High Scores</a>
+
+            <!-- <script src="game.js"></script> -->
+            <script src="indexx.js"></script>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // Import 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+     
+        const firebaseConfig = {
+          apiKey: "AIzaSyC1R9btd3eWN3M_xrmJ6K1-ye4EtcDScyY",
+          authDomain: "first-74301.firebaseapp.com",
+          projectId: "first-74301",
+          storageBucket: "first-74301.appspot.com",
+          messagingSenderId: "9783048559",
+          appId: "1:9783048559:web:2fd169534323a559da909a"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        onAuthStateChanged(auth, (user)=> {
+           
+            if (user) {
+                navv_bar.innerHTML += `<h1 id="nav_h1"> Welcome ${user.displayName}</h1> <div> <img id="nav_img"  src='${user.photoURL}'/> <div>`
+                    const userName = user.displayName;
+                    localStorage.setItem('userRealName', userName)
+            //     nav_h1.innerHTML = ` <h1> Welcome ${user.displayName}</h1>`
+            //    nav_img.innerHTML =  `<img src='${user.photoURL}'/> `
+            
+            } else {
+                console.log('user is not signed in');
+                window.location.href='index.html'
+            }
+        })
+       
+
+       
+
+
+        // signOutBtn.addEventListener ('click', ()=> {
+        //     alert('Ayo')
+        // })
+            
+        document.getElementById('signOutBtn').addEventListener('click', ()=> {
+            signOut(auth)
+            .then(()=> {
+                console.log('user have signed out o');
+                
+            }).catch((err)=> {
+                console.log(err);
+            })
+        })
+      </script>
+</body>
+</html>
