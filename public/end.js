@@ -1,6 +1,6 @@
 
 // public/end.js
-// Firebase initialization + authenticated high-score saving
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import {
@@ -15,9 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 
-// =====================================================
-// FIREBASE CONFIGURATION
-// =====================================================
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1R9btd3eWN3M_xrmJ6K1-ye4EtcDScyY",
@@ -30,9 +28,7 @@ const firebaseConfig = {
 };
 
 
-// =====================================================
-// INITIALIZE FIREBASE
-// =====================================================
+
 
 const app = initializeApp(firebaseConfig);
 
@@ -40,17 +36,13 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 
-// =====================================================
-// GET HTML ELEMENTS
-// =====================================================
+
 
 const saveScoreBtn = document.getElementById("saveScoreBtn");
 const finalScore = document.getElementById("finalScore");
 
 
-// =====================================================
-// GET SCORE AND USER INFORMATION
-// =====================================================
+
 
 const mostRecentScore =
   localStorage.getItem("mostRecentScore") || 0;
@@ -65,16 +57,13 @@ if (finalScore) {
 }
 
 
-// =====================================================
-// FIREBASE AUTHENTICATION STATE
-// =====================================================
+
 
 let currentUser = null;
 let authReady = false;
 
 
-// Wait for Firebase to determine whether the user
-// is logged in or not.
+
 
 onAuthStateChanged(auth, (user) => {
 
@@ -98,9 +87,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
-// =====================================================
-// SAVE HIGH SCORE
-// =====================================================
+
 
 const saveHighScore = async (e) => {
 
@@ -114,9 +101,6 @@ const saveHighScore = async (e) => {
   saveScoreBtn.disabled = true;
 
 
-  // ---------------------------------------------------
-  // Make sure Firebase has finished checking auth
-  // ---------------------------------------------------
 
   if (!authReady) {
 
@@ -128,9 +112,7 @@ const saveHighScore = async (e) => {
   }
 
 
-  // ---------------------------------------------------
-  // Make sure the user is logged in
-  // ---------------------------------------------------
+
 
   if (!currentUser) {
 
@@ -142,9 +124,7 @@ const saveHighScore = async (e) => {
   }
 
 
-  // ---------------------------------------------------
-  // Get user information
-  // ---------------------------------------------------
+
 
   const userName =
     currentUser.displayName ||
@@ -158,25 +138,17 @@ const saveHighScore = async (e) => {
     currentUser.uid;
 
 
-  // ---------------------------------------------------
-  // Get score
-  // ---------------------------------------------------
-
   const scoreValue =
     Number(mostRecentScore) || 0;
 
 
-  // ---------------------------------------------------
-  // Firebase database reference
-  // ---------------------------------------------------
+
 
   const dbRef =
     ref(database, "highScoreStore");
 
 
-  // ---------------------------------------------------
-  // Score object
-  // ---------------------------------------------------
+
 
   const scoreObj = {
 
@@ -192,10 +164,6 @@ const saveHighScore = async (e) => {
 
   };
 
-
-  // ===================================================
-  // SAVE SCORE TO FIREBASE
-  // ===================================================
 
   try {
 
@@ -214,9 +182,7 @@ const saveHighScore = async (e) => {
     );
 
 
-    // =================================================
-    // SAVE LOCAL COPY
-    // =================================================
+
 
     const highScores =
       JSON.parse(
@@ -233,14 +199,13 @@ const saveHighScore = async (e) => {
     });
 
 
-    // Sort highest score first
+
 
     highScores.sort(
       (a, b) => b.score - a.score
     );
 
 
-    // Keep only top 5 locally
 
     highScores.splice(5);
 
@@ -251,9 +216,7 @@ const saveHighScore = async (e) => {
     );
 
 
-    // =================================================
-    // SUCCESS
-    // =================================================
+   
 
     alert("Score saved successfully!");
 
@@ -269,7 +232,7 @@ const saveHighScore = async (e) => {
     );
 
 
-    // More useful error messages
+
 
     if (err.code === "PERMISSION_DENIED") {
 
@@ -294,9 +257,6 @@ const saveHighScore = async (e) => {
 };
 
 
-// =====================================================
-// SAVE BUTTON EVENT
-// =====================================================
 
 if (saveScoreBtn) {
 
@@ -308,9 +268,7 @@ if (saveScoreBtn) {
 }
 
 
-// =====================================================
-// BACKGROUND AUDIO
-// =====================================================
+
 
 const audio =
   new Audio("close.mp3");
@@ -318,9 +276,6 @@ const audio =
 audio.loop = true;
 
 
-// Some browsers block autoplay.
-// We catch the error so it doesn't create
-// an unnecessary console error.
 
 audio.play().catch((error) => {
 
